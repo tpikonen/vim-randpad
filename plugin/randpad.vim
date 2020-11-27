@@ -31,6 +31,9 @@ endif
 augroup Randpad
   autocmd!
 
+  exe "autocmd BufNewFile " . g:RandpadFilePattern .
+                                                \ " call randpad#pad()"
+
   exe "autocmd BufWritePre,FileWritePre " . g:RandpadFilePattern .
                                                 \ " call randpad#repad()"
 
