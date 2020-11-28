@@ -25,7 +25,7 @@ endif
 " Section: Autocmd setup {{{1
 
 if (!exists("g:RandpadFilePattern"))
-  let g:RandpadFilePattern = '*.{rpad}'
+  let g:RandpadFilePattern = '*.{rpad,rp}'
 endif
 
 augroup Randpad
