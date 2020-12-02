@@ -1,0 +1,52 @@
+*randpad.txt*  random padding of files with automatic re-padding
+
+==============================================================================
+INTRODUCTION                                    *randpad*
+
+This plugin implements adding a (long) line with random characters to the
+start and end of a file. This is made automatically when creating files with
+certain extensions (defaulting to *.rpad and *.rp). For these files, random
+character lines at the start and end are replaced with new ones every time a
+file is saved.
+
+------------------------------------------------------------------------------
+COMMANDS                                        *randpad-commands*
+
+                                                *randpad-:RandpadPad*
+:RandpadPad             Adds random padding to the buffer. One line is added
+                        both to the start and end of the buffer and padding is
+                        written to these lines. The existing content will be
+                        left unmodified between the added lines. The length of
+                        the first padding line will vary randomly between
+                        least g:RandpadBlocksize/4 and g:RandpadBlocksize/2.
+                        The last padding line will be written so that the
+                        total buffer size is an integer multiple of
+                        g:RandpadBlocksize.
+
+                                                *randpad-:RandpadRepad*
+:RandpadRepad           Redoes existing random padding.
+
+------------------------------------------------------------------------------
+AUTOCMDS                                        *randpad-autocmds*
+
+New buffers with an extension matching g:RandpadFilePattern will be random
+padded with RandpadPad command on BufNewFile event.
+
+Files and buffers matching g:RandpadFilePattern will be re-padded with
+RandpadRepad upon saving (BufWritePre and FileWritePre events).
+
+------------------------------------------------------------------------------
+VARIABLES                                       *randpad-variables*
+
+                                                *randpad-g:RandpadFilePattern*
+g:RandpadFilePattern    If set, overrides the default set of file patterns
+                        that determine whether this plugin will be activated.
+                        Defaults to `*.{rpad,rp}`.
+
+                                                *randpad-g:RandpadBlocksize*
+g:RandpadBlocksize      The block size of random padded files. The files will
+                        be written to a multiple of this size.
+                        Defaults to 4096.
+
+==============================================================================
+vim:tw=78:sw=4:ts=8:ft=help:norl:
