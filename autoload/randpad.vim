@@ -64,15 +64,17 @@ function s:RandpadReplacePadding()
   let blocksize = g:RandPadBlocksize
   let random = system('bash -c "echo -n $RANDOM"')
   let maxran = 32767 " Maximum value of $RANDOM from bash
+  let lennewline = 0
+  if &fileformat == 'dos'
+    let lennewline = 1
+  endif
 
-  let startjunklen=s:minStartPad+((s:maxStartPad - s:minStartPad)*random)/maxran
-  let contlen=strlen(join(getline(2,line('$')-1)))
-  let filelen=(((startjunklen + contlen + s:minEndPad)/blocksize)+1)*blocksize
-  let endjunklen=filelen-(startjunklen+contlen)
   let curline=line('.')
-
   execute 'set nofoldenable'
+  let startjunklen=s:minStartPad+((s:maxStartPad - s:minStartPad)*random)/maxran
   execute '1!head -c'.startjunklen.' /dev/urandom | base64 | tr --delete ''\n='' | head -c '.startjunklen
+  let nowlen=line2byte('$')
+  let endjunklen=blocksize*(1+(nowlen+s:minEndPad+lennewline)/blocksize)-nowlen-lennewline
   execute '$!head -c'.endjunklen.' /dev/urandom | base64 | tr --delete ''\n='' | head -c '.endjunklen
   execute 'set foldenable'
   execute curline
