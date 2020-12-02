@@ -10,9 +10,12 @@
 
 " Section: Constants {{{1
 
-let s:minStartPad=1024
-let s:maxStartPad=2048
-let s:minEndPad=512
+if (!exists("g:RandpadBlocksize"))
+  let g:RandPadBlocksize=4096
+endif
+let s:maxStartPad=g:RandPadBlocksize/2
+let s:minStartPad=g:RandPadBlocksize/4
+let s:minEndPad=g:RandPadBlocksize/8
 
 " Section: Functions {{{1
 
@@ -58,7 +61,7 @@ endfunction
 " a multiple of blocksize, 4096 bytes.
 "
 function s:RandpadReplacePadding()
-  let blocksize = 4096
+  let blocksize = g:RandPadBlocksize
   let random = system('bash -c "echo -n $RANDOM"')
   let maxran = 32767 " Maximum value of $RANDOM from bash
 
